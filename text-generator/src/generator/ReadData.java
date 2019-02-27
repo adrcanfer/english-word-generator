@@ -1,26 +1,35 @@
 package generator;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import generator.Word.WordType;
 
 public class ReadData {
 	
-	public static List<String> wordsList(){
-		List<String> res = new ArrayList<String>();
+	public static Map<WordType, List<String>> wordsList(){
+		Map<WordType, List<String>> res = new HashMap<>();
 		String csvFile = "data/words.csv";
         BufferedReader br = null;
         String line = "";
-        String cvsSplitBy = ",";
         try {
             br = new BufferedReader(new FileReader(csvFile));
             line = br.readLine();
             while ((line = br.readLine()) != null) {
-                String[] word = line.split(cvsSplitBy);
-                res.add(word[1]);
+                Word word = new Word(line);
+                if(res.containsKey(word.getWordType())) {
+                	res.get(word.getWordType()).add(word.getWord());
+                } else {
+                	List<String> words = new ArrayList<String>();
+                	words.add(word.getWord());
+                	res.put(word.getWordType(), words);
+                }
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -4,14 +4,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import generator.Word.WordType;
+
 public class Generator {
-	public static String randomWord() {
-		List<String> words = ReadData.wordsList();
+	public static String randomWord(WordType wordType) {
+		List<String> words = ReadData.wordsList().get(wordType);
 		return words.get(new Random().nextInt(words.size()));
 	}
 	
-	public static String randomWordPair() {
-		List<String> words = ReadData.wordsList();
+	public static String randomWord(WordType wordType, Long seed) {
+		List<String> words = ReadData.wordsList().get(wordType);
+		return words.get(new Random(seed).nextInt(words.size()));
+	}
+	
+	public static String randomWordPair(WordType wordType) {
+		List<String> words = ReadData.wordsList().get(wordType);
 		String res = "";
 		res += words.get(new Random().nextInt(words.size()));
 		res += " " + words.get(new Random().nextInt(words.size()));
